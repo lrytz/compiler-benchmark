@@ -126,3 +126,17 @@ class HotScalacBenchmark extends ScalacBenchmark {
   @Benchmark
   def compile(): Unit = compileImpl()
 }
+
+@BenchmarkMode(Array(SampleTime))
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
+@Warmup(iterations = 10, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 5, timeUnit = TimeUnit.SECONDS)
+@Fork(value = 3, jvmArgs = Array("-Xms2G", "-Xmx2G"))
+class NewGlobalBenchmark {
+  @Benchmark
+  def newGlobal(): Global = {
+    val s = new Settings()
+    val r = new reporters.ConsoleReporter(s)
+    new Global(s, r)
+  }
+}
