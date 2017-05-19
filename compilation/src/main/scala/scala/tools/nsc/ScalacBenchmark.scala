@@ -11,6 +11,8 @@ import org.openjdk.jmh.annotations.Mode._
 
 @State(Scope.Benchmark)
 class ScalacBenchmark {
+  @Param(value = Array("tmp"))
+  var outDir: String = _
   @Param(value = Array[String]())
   var source: String = _
   @Param(value = Array(""))
@@ -54,10 +56,16 @@ class ScalacBenchmark {
   private var tempDir: File = null
 
   @Setup(Level.Trial) def initTemp(): Unit = {
-    val tempFile = java.io.File.createTempFile("output", "")
-    tempFile.delete()
-    tempFile.mkdir()
-    tempDir = tempFile
+    tempDir = if (outDir == "tmp") {
+      val tempFile = java.io.File.createTempFile("output", "")
+      tempFile.delete()
+      tempFile.mkdir()
+      tempFile
+    } else {
+      val d = new java.io.File(outDir)
+      if (!d.exists()) d.mkdir()
+      d
+    }
   }
   @TearDown(Level.Trial) def clearTemp(): Unit = {
     val directory = tempDir.toPath
