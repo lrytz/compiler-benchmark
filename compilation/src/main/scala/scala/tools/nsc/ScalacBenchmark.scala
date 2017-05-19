@@ -13,6 +13,8 @@ import org.openjdk.jmh.annotations.Mode._
 class ScalacBenchmark {
   @Param(value = Array("tmp"))
   var outDir: String = _
+  @Param(value = Array(""))
+  var stopBefore: String = _
   @Param(value = Array[String]())
   var source: String = _
   @Param(value = Array(""))
@@ -42,6 +44,8 @@ class ScalacBenchmark {
         settings.usejavacp.value = true
         settings.outdir.value = tempDir.getAbsolutePath
         settings.nowarn.value = true
+        if (!stopBefore.isEmpty)
+          settings.stopBefore.value = List(stopBefore)
         if (extraArgs != null && extraArgs != "")
           settings.processArgumentString(extraArgs)
         true
