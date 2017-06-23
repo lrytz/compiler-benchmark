@@ -2,7 +2,8 @@ name := "compiler-benchmark"
 
 version := "1.0-SNAPSHOT"
 
-def scala211 = "2.11.11"
+def scala211 = "2.12.3-bin-8e9ab2a"
+//def scala211 = "2.11.1"
 def dottyLatest = "0.2.0-RC1"
 scalaVersion in ThisBuild := scala211
 
